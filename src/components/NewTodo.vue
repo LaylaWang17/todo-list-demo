@@ -1,19 +1,17 @@
 <template>
   <el-input class="input" v-model="input" placeholder="What needs to be done?">
-    <el-button slot="prepend" icon="el-icon-arrow-down"></el-button>
+    <el-button slot="prepend" icon="el-icon-arrow-down" @click="handleCheckAll"></el-button>
   </el-input>
 </template>
 <script>
-import Vue from "vue";
-import { Input } from "element-ui";
-
-Vue.use(Input);
-
 export default {
   data() {
     return {
       input: ""
     };
+  },
+  methods: {
+    handleCheckAll() {}
   }
 };
 </script>
