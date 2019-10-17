@@ -5,12 +5,11 @@
 </template>
 <script>
 export default {
-  props: { initTodos: [] },
+  props: { todos: Array },
   data() {
     return {
       checkAll: false,
-      checkedTodos: [],
-      todos: this.initTodos
+      checkedTodos: []
     };
   },
   methods: {

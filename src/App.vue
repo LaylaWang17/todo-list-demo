@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <h1>todos</h1>
-    <new-todo></new-todo>
-    <List></List>
+    <new-todo @add-todo="addTodo"></new-todo>
+    <List :todos="todos"></List>
   </div>
 </template>
 
@@ -15,6 +15,16 @@ export default {
   components: {
     NewTodo,
     List
+  },
+  data() {
+    return {
+      todos: []
+    };
+  },
+  methods: {
+    addTodo(todo) {
+      this.todos.push(todo);
+    }
   }
 };
 </script>
