@@ -1,7 +1,7 @@
 <template>
   <form @submit="handleAddTodo($event)">
     <el-input class="input" v-model="input" placeholder="What needs to be done?">
-      <el-button slot="prepend" icon="el-icon-arrow-down" @click="handleCheckAll"></el-button>
+      <el-button slot="prepend" icon="el-icon-arrow-down" @click="toggleCheckAll"></el-button>
     </el-input>
   </form>
 </template>
@@ -13,11 +13,13 @@ export default {
     };
   },
   methods: {
-    handleCheckAll() {},
     handleAddTodo(event) {
       event.preventDefault();
       this.$emit("add-todo", this.input);
       this.input = "";
+    },
+    toggleCheckAll() {
+      this.$emit("toggle-check-all");
     }
   }
 };

@@ -17,7 +17,8 @@ export default {
   data() {
     return {
       todos: [],
-      completedTodos: []
+      completedTodos: [],
+      checkedAll: false
     };
   },
   methods: {
@@ -29,6 +30,12 @@ export default {
     },
     deleteTodo(todo) {
       this.todos = this.todos.filter(item => item !== todo);
+    },
+    toggleCheckAll() {
+      this.checkedAll
+        ? (this.completedTodos = [])
+        : (this.completedTodos = this.todos);
+      this.checkedAll = !this.checkedAll;
     }
   }
 };

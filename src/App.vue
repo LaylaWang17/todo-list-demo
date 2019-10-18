@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>todos</h1>
-    <new-todo @add-todo="addTodo"></new-todo>
+    <new-todo @add-todo="addTodo" @toggle-check-all="toggleCheckAll"></new-todo>
     <List ref="list"></List>
   </div>
 </template>
@@ -20,6 +20,9 @@ export default {
     addTodo(todo) {
       // this.todos.push(todo);
       this.$refs.list.addTodo(todo);
+    },
+    toggleCheckAll() {
+      this.$refs.list.toggleCheckAll();
     }
   }
 };
