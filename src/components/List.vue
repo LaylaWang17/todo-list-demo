@@ -1,21 +1,34 @@
 <template>
-  <el-checkbox-group v-model="checkedTodos" @change="handleCheckedTodosChange">
-    <el-checkbox class="todo-item" v-for="todo in todos" :label="todo" :key="todo">{{todo}}</el-checkbox>
+  <el-checkbox-group v-model="completedTodos">
+    <el-checkbox
+      class="todo-item"
+      v-for="todo in todos"
+      :label="todo"
+      :key="todo"
+      @change="handleComplete(todo)"
+    >
+      <span>{{todo}}</span>
+      <el-link icon="el-icon-close" :underline="false" @click="deleteTodo(todo)"></el-link>
+    </el-checkbox>
   </el-checkbox-group>
 </template>
 <script>
 export default {
-  props: { todos: Array },
   data() {
     return {
-      checkAll: false,
-      checkedTodos: []
+      todos: [],
+      completedTodos: []
     };
   },
   methods: {
-    handleCheckedTodosChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.todos.length;
+    addTodo(todo) {
+      this.todos.push(todo);
+    },
+    handleComplete(todo) {
+      this.completedTodos.push(todo);
+    },
+    deleteTodo(todo) {
+      this.todos = this.todos.filter(item => item !== todo);
     }
   }
 };

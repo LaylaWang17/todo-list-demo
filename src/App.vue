@@ -2,7 +2,7 @@
   <div id="app">
     <h1>todos</h1>
     <new-todo @add-todo="addTodo"></new-todo>
-    <List :todos="todos"></List>
+    <List ref="list"></List>
   </div>
 </template>
 
@@ -16,14 +16,10 @@ export default {
     NewTodo,
     List
   },
-  data() {
-    return {
-      todos: []
-    };
-  },
   methods: {
     addTodo(todo) {
-      this.todos.push(todo);
+      // this.todos.push(todo);
+      this.$refs.list.addTodo(todo);
     }
   }
 };
