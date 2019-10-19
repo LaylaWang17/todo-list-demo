@@ -3,7 +3,11 @@
     <h1>todos</h1>
     <new-todo @add-todo="addTodo" @toggle-check-all="toggleCheckAll"></new-todo>
     <todo-list ref="todoList" @count-left-items="countLeftItems"></todo-list>
-    <control-panel :left-items-count="leftItemsCount" @clear-completed="clearCompleted"></control-panel>
+    <control-panel
+      :left-items-count="leftItemsCount"
+      @clear-completed="clearCompleted"
+      @toggle-display-mode="toggleDisplayMode"
+    ></control-panel>
   </div>
 </template>
 
@@ -36,6 +40,9 @@ export default {
     },
     clearCompleted() {
       this.$refs.todoList.clearCompleted();
+    },
+    toggleDisplayMode(mode) {
+      this.$refs.todoList.showTodos(mode);
     }
   }
 };

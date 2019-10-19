@@ -2,7 +2,7 @@
   <div>
     <el-checkbox
       class="todo-item-wrapper"
-      v-for="todo in todos"
+      v-for="todo in displayedTodos"
       :key="todo.id"
       :checked="todo.completed"
       @change="handleCheck(todo)"
@@ -19,8 +19,18 @@ export default {
   data() {
     return {
       todos: [],
-      checkedAll: false
+      displayedTodos: [],
+      checkedAll: false,
+      displayMode: "all"
     };
+  },
+  computed: {
+    activeTodos: function() {
+      return this.todos.filter(todo => !todo.completed);
+    },
+    completedTodos: function() {
+      return this.todos.filter(todo => todo.completed);
+    }
   },
   created() {
     if (!localStorage.getItem("todos")) {
@@ -28,10 +38,12 @@ export default {
     }
     this.todos = JSON.parse(localStorage.getItem("todos"));
     this.checkedAll = this.todos.findIndex(item => !item.completed) === -1;
+    this.showTodos(this.displayMode);
     this.$emit("count-left-items", this.countLeftItems());
   },
   updated() {
     this.$nextTick(function() {
+      this.showTodos(this.displayMode);
       this.updateLocalStorage();
       this.$emit("count-left-items", this.countLeftItems());
     });
@@ -43,6 +55,7 @@ export default {
         title: todo,
         completed: false
       });
+      this.showTodos(this.displayMode);
     },
     handleCheck(todo) {
       todo.completed = !todo.completed;
@@ -51,17 +64,17 @@ export default {
       this.todos = this.todos.filter(item => item.id !== todo.id);
     },
     toggleCheckAll() {
-      if (this.checkedAll) {
-        this.todos.forEach(todo => {
-          todo.completed = false;
-        });
-      } else {
-        this.todos.forEach(todo => {
-          todo.completed = true;
-        });
-      }
-      this.checkedAll = !this.checkedAll;
-      this.updateLocalStorage();
+      // if (this.checkedAll) {
+      //   this.todos.forEach(todo => {
+      //     todo.completed = false;
+      //   });
+      // } else {
+      //   this.todos.forEach(todo => {
+      //     todo.completed = true;
+      //   });
+      // }
+      // this.checkedAll = !this.checkedAll;
+      // this.updateLocalStorage();
     },
     countLeftItems() {
       return this.todos.filter(todo => !todo.completed).length;
@@ -69,9 +82,24 @@ export default {
     clearCompleted() {
       this.todos = this.todos.filter(todo => !todo.completed);
       this.updateLocalStorage();
+      this.showTodos(this.displayMode);
     },
     updateLocalStorage() {
       localStorage.setItem("todos", JSON.stringify(this.todos));
+    },
+    showTodos(mode) {
+      this.displayMode = mode;
+      switch (mode) {
+        case "active":
+          this.displayedTodos = this.activeTodos;
+          break;
+        case "completed":
+          this.displayedTodos = this.completedTodos;
+          break;
+        default:
+          this.displayedTodos = this.todos;
+          break;
+      }
     }
   }
 };

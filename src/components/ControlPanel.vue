@@ -3,9 +3,9 @@
     <el-col :span="6" class="items-left">{{leftItemsCount}} items left</el-col>
     <el-col :span="12">
       <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
-        <el-menu-item index="1">All</el-menu-item>
-        <el-menu-item index="2">Active</el-menu-item>
-        <el-menu-item index="3">Completed</el-menu-item>
+        <el-menu-item index="all">All</el-menu-item>
+        <el-menu-item index="active">Active</el-menu-item>
+        <el-menu-item index="completed">Completed</el-menu-item>
       </el-menu>
     </el-col>
     <el-col :span="6" class="button-wrapper">
@@ -18,11 +18,13 @@ export default {
   props: ["left-items-count"],
   data() {
     return {
-      activeIndex: "1"
+      activeIndex: "all"
     };
   },
   methods: {
-    handleSelect() {},
+    handleSelect(key) {
+      this.$emit("toggle-display-mode", key);
+    },
     clearCompleted() {
       this.$emit("clear-completed");
     }
