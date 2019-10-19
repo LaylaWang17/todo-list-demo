@@ -1,6 +1,6 @@
 <template>
   <el-row class="control-panel">
-    <el-col :span="6" class="items-left">2 items left</el-col>
+    <el-col :span="6" class="items-left">{{leftItemsCount}} items left</el-col>
     <el-col :span="12">
       <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1">All</el-menu-item>
@@ -15,6 +15,7 @@
 </template>
 <script>
 export default {
+  props: ["left-items-count"],
   data() {
     return {
       activeIndex: "1"

@@ -2,8 +2,8 @@
   <div id="app">
     <h1>todos</h1>
     <new-todo @add-todo="addTodo" @toggle-check-all="toggleCheckAll"></new-todo>
-    <todo-list ref="todoList"></todo-list>
-    <control-panel></control-panel>
+    <todo-list ref="todoList" @count-left-items="countLeftItems"></todo-list>
+    <control-panel :left-items-count="leftItemsCount"></control-panel>
   </div>
 </template>
 
@@ -19,12 +19,20 @@ export default {
     TodoList,
     ControlPanel
   },
+  data() {
+    return {
+      leftItemsCount: 0
+    };
+  },
   methods: {
     addTodo(todo) {
       this.$refs.todoList.addTodo(todo);
     },
     toggleCheckAll() {
       this.$refs.todoList.toggleCheckAll();
+    },
+    countLeftItems(count) {
+      this.leftItemsCount = count;
     }
   }
 };

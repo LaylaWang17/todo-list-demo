@@ -24,15 +24,17 @@ export default {
   },
   created() {
     if (!localStorage.getItem("todos")) {
-      this.updateLocalStorage();
+      this.updateLocalStorage([]);
     }
     this.todos = JSON.parse(localStorage.getItem("todos"));
     this.checkedAll = this.todos.findIndex(item => !item.completed) === -1;
+    this.$emit("count-left-items", this.countLeftItems());
   },
-  watch: {
-    todos: function(val) {
-      this.updateLocalStorage(val);
-    }
+  updated() {
+    this.$nextTick(function() {
+      this.updateLocalStorage(this.todos);
+      this.$emit("count-left-items", this.countLeftItems());
+    });
   },
   methods: {
     addTodo(todo) {
@@ -44,7 +46,6 @@ export default {
     },
     handleCheck(todo) {
       todo.completed = !todo.completed;
-      this.updateLocalStorage(this.todos);
     },
     deleteTodo(todo) {
       this.todos = this.todos.filter(item => item.id !== todo.id);
@@ -61,6 +62,9 @@ export default {
       }
       this.checkedAll = !this.checkedAll;
       this.updateLocalStorage(this.todos);
+    },
+    countLeftItems() {
+      return this.todos.filter(todo => !todo.completed).length;
     },
     updateLocalStorage(todos) {
       localStorage.setItem("todos", JSON.stringify(todos));
