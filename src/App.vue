@@ -2,27 +2,26 @@
   <div id="app">
     <h1>todos</h1>
     <new-todo @add-todo="addTodo" @toggle-check-all="toggleCheckAll"></new-todo>
-    <List ref="list"></List>
+    <todo-list ref="todoList"></todo-list>
   </div>
 </template>
 
 <script>
 import NewTodo from "./components/NewTodo.vue";
-import List from "./components/List.vue";
+import TodoList from "./components/TodoList.vue";
 
 export default {
   name: "app",
   components: {
     NewTodo,
-    List
+    TodoList
   },
   methods: {
     addTodo(todo) {
-      // this.todos.push(todo);
-      this.$refs.list.addTodo(todo);
+      this.$refs.todoList.addTodo(todo);
     },
     toggleCheckAll() {
-      this.$refs.list.toggleCheckAll();
+      this.$refs.todoList.toggleCheckAll();
     }
   }
 };

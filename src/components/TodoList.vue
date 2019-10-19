@@ -6,7 +6,6 @@
       :key="todo.id"
       :checked="todo.completed"
       @change="handleCheck(todo)"
-      ref="todos"
     >
       <span class="todo-item">{{todo.title}}</span>
       <el-link class="delete-btn" icon="el-icon-close" :underline="false" @click="deleteTodo(todo)"></el-link>
