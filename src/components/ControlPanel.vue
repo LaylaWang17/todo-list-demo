@@ -9,7 +9,7 @@
       </el-menu>
     </el-col>
     <el-col :span="6" class="button-wrapper">
-      <el-button>Clear completed</el-button>
+      <el-button @click="clearCompleted">Clear completed</el-button>
     </el-col>
   </el-row>
 </template>
@@ -22,7 +22,10 @@ export default {
     };
   },
   methods: {
-    handleSelect() {}
+    handleSelect() {},
+    clearCompleted() {
+      this.$emit("clear-completed");
+    }
   }
 };
 </script>

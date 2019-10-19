@@ -24,7 +24,7 @@ export default {
   },
   created() {
     if (!localStorage.getItem("todos")) {
-      this.updateLocalStorage([]);
+      this.updateLocalStorage();
     }
     this.todos = JSON.parse(localStorage.getItem("todos"));
     this.checkedAll = this.todos.findIndex(item => !item.completed) === -1;
@@ -32,7 +32,7 @@ export default {
   },
   updated() {
     this.$nextTick(function() {
-      this.updateLocalStorage(this.todos);
+      this.updateLocalStorage();
       this.$emit("count-left-items", this.countLeftItems());
     });
   },
@@ -61,13 +61,17 @@ export default {
         });
       }
       this.checkedAll = !this.checkedAll;
-      this.updateLocalStorage(this.todos);
+      this.updateLocalStorage();
     },
     countLeftItems() {
       return this.todos.filter(todo => !todo.completed).length;
     },
-    updateLocalStorage(todos) {
-      localStorage.setItem("todos", JSON.stringify(todos));
+    clearCompleted() {
+      this.todos = this.todos.filter(todo => !todo.completed);
+      this.updateLocalStorage();
+    },
+    updateLocalStorage() {
+      localStorage.setItem("todos", JSON.stringify(this.todos));
     }
   }
 };
