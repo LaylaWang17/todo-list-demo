@@ -36,14 +36,15 @@ export default {
     if (!localStorage.getItem("todos")) {
       this.updateLocalStorage();
     }
-    this.todos = JSON.parse(localStorage.getItem("todos"));
-    this.checkedAll = this.todos.findIndex(item => !item.completed) === -1;
+    this.reloadTodos();
+    this.resetCheckedAll();
     this.changeDisplayMode(this.displayMode);
     this.$emit("count-left-items", this.countLeftItems());
     this.$emit("toggle-clear-btn-visibility", this.toggleClearBtnVisibility());
   },
   updated() {
     this.$nextTick(function() {
+      this.resetCheckedAll();
       this.changeDisplayMode(this.displayMode);
       this.updateLocalStorage();
       this.$emit("count-left-items", this.countLeftItems());
@@ -69,17 +70,15 @@ export default {
       this.todos = this.todos.filter(item => item.id !== todo.id);
     },
     toggleCheckAll() {
-      // if (this.checkedAll) {
-      //   this.todos.forEach(todo => {
-      //     todo.completed = false;
-      //   });
-      // } else {
-      //   this.todos.forEach(todo => {
-      //     todo.completed = true;
-      //   });
-      // }
-      // this.checkedAll = !this.checkedAll;
-      // this.updateLocalStorage();
+      if (this.checkedAll) {
+        this.todos.forEach(todo => {
+          todo.completed = false;
+        });
+      } else {
+        this.todos.forEach(todo => {
+          todo.completed = true;
+        });
+      }
     },
     countLeftItems() {
       return this.todos.filter(todo => !todo.completed).length;
@@ -88,6 +87,12 @@ export default {
       this.todos = this.todos.filter(todo => !todo.completed);
       this.updateLocalStorage();
       this.changeDisplayMode(this.displayMode);
+    },
+    reloadTodos() {
+      this.todos = JSON.parse(localStorage.getItem("todos"));
+    },
+    resetCheckedAll() {
+      this.checkedAll = this.todos.findIndex(item => !item.completed) === -1;
     },
     updateLocalStorage() {
       localStorage.setItem("todos", JSON.stringify(this.todos));
