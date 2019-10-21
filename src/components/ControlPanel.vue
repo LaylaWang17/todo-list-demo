@@ -9,21 +9,26 @@
       </el-menu>
     </el-col>
     <el-col :span="6" class="button-wrapper">
-      <el-button @click="clearCompleted">Clear completed</el-button>
+      <el-button :class="{hide: this.hideClearBtn}" @click="clearCompleted">Clear completed</el-button>
     </el-col>
   </el-row>
 </template>
 <script>
 export default {
-  props: ["left-items-count"],
+  props: ["left-items-count", "hide-clear-btn"],
   data() {
     return {
       activeIndex: "all"
     };
   },
+  computed: {
+    clearBtnVisibility: function() {
+      return this.leftItemsCount;
+    }
+  },
   methods: {
     handleSelect(key) {
-      this.$emit("toggle-display-mode", key);
+      this.$emit("change-display-mode", key);
     },
     clearCompleted() {
       this.$emit("clear-completed");
@@ -64,5 +69,9 @@ export default {
 
 .el-button:hover {
   background: #ffffff;
+}
+
+.hide {
+  display: none;
 }
 </style>

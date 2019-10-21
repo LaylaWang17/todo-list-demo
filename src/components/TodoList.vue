@@ -38,14 +38,19 @@ export default {
     }
     this.todos = JSON.parse(localStorage.getItem("todos"));
     this.checkedAll = this.todos.findIndex(item => !item.completed) === -1;
-    this.showTodos(this.displayMode);
+    this.changeDisplayMode(this.displayMode);
     this.$emit("count-left-items", this.countLeftItems());
+    this.$emit("toggle-clear-btn-visibility", this.toggleClearBtnVisibility());
   },
   updated() {
     this.$nextTick(function() {
-      this.showTodos(this.displayMode);
+      this.changeDisplayMode(this.displayMode);
       this.updateLocalStorage();
       this.$emit("count-left-items", this.countLeftItems());
+      this.$emit(
+        "toggle-clear-btn-visibility",
+        this.toggleClearBtnVisibility()
+      );
     });
   },
   methods: {
@@ -55,7 +60,7 @@ export default {
         title: todo,
         completed: false
       });
-      this.showTodos(this.displayMode);
+      this.changeDisplayMode(this.displayMode);
     },
     handleCheck(todo) {
       todo.completed = !todo.completed;
@@ -82,12 +87,12 @@ export default {
     clearCompleted() {
       this.todos = this.todos.filter(todo => !todo.completed);
       this.updateLocalStorage();
-      this.showTodos(this.displayMode);
+      this.changeDisplayMode(this.displayMode);
     },
     updateLocalStorage() {
       localStorage.setItem("todos", JSON.stringify(this.todos));
     },
-    showTodos(mode) {
+    changeDisplayMode(mode) {
       this.displayMode = mode;
       switch (mode) {
         case "active":
@@ -100,6 +105,9 @@ export default {
           this.displayedTodos = this.todos;
           break;
       }
+    },
+    toggleClearBtnVisibility() {
+      return this.countLeftItems() === this.todos.length;
     }
   }
 };

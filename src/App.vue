@@ -2,11 +2,16 @@
   <div id="app">
     <h1>todos</h1>
     <new-todo @add-todo="addTodo" @toggle-check-all="toggleCheckAll"></new-todo>
-    <todo-list ref="todoList" @count-left-items="countLeftItems"></todo-list>
+    <todo-list
+      ref="todoList"
+      @count-left-items="countLeftItems"
+      @toggle-clear-btn-visibility="toggleClearBtnVisibility"
+    ></todo-list>
     <control-panel
       :left-items-count="leftItemsCount"
+      :hide-clear-btn="hideClearBtn"
       @clear-completed="clearCompleted"
-      @toggle-display-mode="toggleDisplayMode"
+      @change-display-mode="changeDisplayMode"
     ></control-panel>
   </div>
 </template>
@@ -25,7 +30,8 @@ export default {
   },
   data() {
     return {
-      leftItemsCount: 0
+      leftItemsCount: 0,
+      hideClearBtn: true
     };
   },
   methods: {
@@ -41,8 +47,11 @@ export default {
     clearCompleted() {
       this.$refs.todoList.clearCompleted();
     },
-    toggleDisplayMode(mode) {
-      this.$refs.todoList.showTodos(mode);
+    changeDisplayMode(mode) {
+      this.$refs.todoList.changeDisplayMode(mode);
+    },
+    toggleClearBtnVisibility(visible) {
+      this.hideClearBtn = visible;
     }
   }
 };
