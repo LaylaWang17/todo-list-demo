@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isUpdate">
     <el-checkbox
       class="todo-item-wrapper"
       v-for="todo in displayedTodos"
@@ -21,7 +21,8 @@ export default {
       todos: [],
       displayedTodos: [],
       checkedAll: false,
-      displayMode: "all"
+      displayMode: "all",
+      isUpdate: true
     };
   },
   computed: {
@@ -70,6 +71,7 @@ export default {
       this.todos = this.todos.filter(item => item.id !== todo.id);
     },
     toggleCheckAll() {
+      this.isUpdate = false;
       if (this.checkedAll) {
         this.todos.forEach(todo => {
           todo.completed = false;
@@ -79,6 +81,9 @@ export default {
           todo.completed = true;
         });
       }
+      this.$nextTick(() => {
+        this.isUpdate = true;
+      });
     },
     countLeftItems() {
       return this.todos.filter(todo => !todo.completed).length;
